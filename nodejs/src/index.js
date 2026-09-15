@@ -59,7 +59,8 @@ export async function start(config) {
     server.db = new JsonDB(new Config((process.env['NODE_PATH'] || '.') + '/db.json', true, true, '/', true));
     server.register(router);
     // 注意 一定要监听ipv4地址 build后 app中使用时 端口使用0让系统自动分配可用端口
-    server.listen({ port: process.env['DEV_HTTP_PORT'] || 0, host: '127.0.0.1' });
+    // docker 部署时设 DEV_HTTP_HOST=0.0.0.0 对外提供服务
+    server.listen({ port: process.env['DEV_HTTP_PORT'] || 0, host: process.env['DEV_HTTP_HOST'] || '127.0.0.1' });
 }
 
 /**
